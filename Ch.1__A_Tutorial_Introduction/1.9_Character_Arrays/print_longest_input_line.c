@@ -49,7 +49,6 @@ int getline(char s[], int lim)
 void copy(char to[], char from[])
 {
     int i;
-    char c;
 
     for (i=0; (to[i] = from[i]) != NULL; ++i);
 }
