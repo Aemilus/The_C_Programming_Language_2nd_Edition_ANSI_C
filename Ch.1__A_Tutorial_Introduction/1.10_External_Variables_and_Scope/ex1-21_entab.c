@@ -1,8 +1,8 @@
 /*
 Exercise 1-21. 
-Write a program entab that replaces strings of blanks by the minimum number of tabs and blanks to achieve
-the same spacing. Use the same tab stops as for detab. When either a tab or a single blank would suffice to reach a tab stop,
-which should be given preference? 
+Write a program entab that replaces strings of blanks by the minimum number of tabs and blanks to achieve the same spacing. 
+Use the same tab stops as for detab. 
+When either a tab or a single blank would suffice to reach a tab stop, which should be given preference? 
 */
 #include <stdio.h>
 
@@ -24,7 +24,6 @@ int main()
     int len;
 
     while ((len=getline()) > 0) {
-        getline();
         entab();
         printf("%s", eline);
     }
@@ -52,23 +51,43 @@ void entab(void)
 {
     int i;
     int j;
-    int k;
+    int k; /* counts number of blanks */
     int next_tab_stop;
     char c;
 
     j = 0;
-    for (i=0; (c=line[i]) != NULL; i=++i+k) {
-        k = 0;
+    for (i=0; (c=line[i]) != NULL; ++i) {
         /* k: count successive blanks from current position */
+        k = 0;
         while (line[i+k] == BLANK)
             ++k;
         
-        /* if there are blanks then verify if we can replace by tabs */
+        /* if there are blanks then try to replace with tabs */
         if (k > 0) {
-            next_tab_stop = i / TAB_SPACES * TAB_SPACES + TAB_SPACES;
-            while (k > 0)
-        } else
+            /* determine next tab stop index */
+            next_tab_stop = i / TAB_SPACES * TAB_SPACES + TAB_SPACES - 1;
+            /* while we can replace blanks with tabs then do so */
+            while (i+k > next_tab_stop) {
+                eline[j] = TAB;
+                ++j;
+                k = k - TAB_SPACES; /* subtract the number of blank spaces replaced by a tab */
+                i = next_tab_stop + 1; /* move right after the last blank space replaced by tab */
+                next_tab_stop = next_tab_stop + TAB_SPACES;
+            }
+            /*  If there are blanks remaining but we can't replace with tabs then copy the blanks;
+                Since we are placed after the last blank space replaced by tab we need to move one step back
+                => decrement i at start of for loop
+             */
+            for (--i ; k > 0; --k) {
+                eline[j] = BLANK;
+                ++j;
+                ++i;
+            }
+        /* else put the current char in the eline array and move to next */
+        } else {
             eline[j] = c;
-        ++j;
+            ++j;
+        }
     }
+    eline[j] = NULL;
 }
