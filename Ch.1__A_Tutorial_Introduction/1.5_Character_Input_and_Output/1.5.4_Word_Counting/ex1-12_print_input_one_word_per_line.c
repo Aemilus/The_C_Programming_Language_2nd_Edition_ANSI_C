@@ -3,7 +3,7 @@
 #define IN  1  /* inside word */
 #define OUT 0 /* outside word */
 
-/* write a program that prints it's input onw word per line */
+/* write a program that prints it's input one word per line */
 main()
 {
     int c, state;
