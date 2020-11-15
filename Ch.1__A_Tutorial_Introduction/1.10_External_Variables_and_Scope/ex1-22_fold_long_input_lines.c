@@ -23,7 +23,6 @@ void foldline(int column);
 int main()
 {
     while ((linelen=getline()) > 0) {
-        printf("%d", linelen);
         foldline(COLUMN_FOLD);
     }
 
@@ -56,4 +55,6 @@ void foldline(int column)
     for (i=0; i<linelen; ++i) {
         putchar(line[i]);
     }
+    if (line[i] != NEWLINE)
+        putchar(NEWLINE);
 }
